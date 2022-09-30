@@ -3,6 +3,7 @@ import sys
 import translator
 import pyperclip
 import pytesseract
+import tkinter
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
@@ -77,7 +78,6 @@ class Snipper(QtWidgets.QWidget):
         processImage(shot)
         QtWidgets.QApplication.quit()
 
-
 def processImage(img):
     buffer = QtCore.QBuffer()
     buffer.open(QtCore.QBuffer.ReadWrite)
@@ -95,7 +95,10 @@ def processImage(img):
         return
 
     if result:
-        pyperclip.copy(translator.translate(text=result))
+        result.replace('  ', '\n')
+        result = translator.translate(result)
+        #print(result)
+        pyperclip.copy(result)
         notify(f'Copied result to the clipboard')
     else:
         print(f"INFO: Unable to read text from image, did not copy")
