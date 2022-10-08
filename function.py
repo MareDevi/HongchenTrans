@@ -86,7 +86,7 @@ def processImage(img):
     buffer.close()
 
     try:
-        result = pytesseract.image_to_string(
+        source = pytesseract.image_to_string(
             pil_img, timeout=5, lang=(sys.argv[1] if len(sys.argv) > 1 else None)
         ).strip()
     except RuntimeError as error:
@@ -94,10 +94,10 @@ def processImage(img):
         notify(f"An error occurred when trying to process the image: {error}")
         return
 
-    if result:
-        result.replace('  ', '\n')
+    if source:
+        result = source.replace('\n', '    ')
         result = translator.translate(result)
-        #print(result)
+        passinfo([source,result])
         pyperclip.copy(result)
         notify(f'Copied result to the clipboard')
     else:
@@ -118,6 +118,13 @@ def notify(msg):
         trayicon.showMessage("TextShot", msg, QtWidgets.QSystemTrayIcon.NoIcon)
         trayicon.hide()
 
+def passinfo(info):
+    global source
+    global result
+
+    source = info[0]
+    result = info[1]
+
 def run():
     QtCore.QCoreApplication.setAttribute(Qt.AA_DisableHighDpiScaling)
     app = QtWidgets.QApplication(sys.argv)
@@ -137,4 +144,5 @@ def run():
     window = QtWidgets.QMainWindow()
     snipper = Snipper(window)
     snipper.show()
-    sys.exit(app.exec_())
+    app.exec_()
+    #sys.exit()

@@ -1,4 +1,4 @@
-import function
+import GUI
 
 if __name__ == "__main__":
-    function.run()
+    GUI.main()

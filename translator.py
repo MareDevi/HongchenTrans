@@ -3,12 +3,24 @@ import hashlib
 import urllib
 import random
 import json
+import yaml
+import os
 from pip._vendor.distlib.compat import raw_input
- 
+
+if 'config.yaml' in os.listdir():
+    with open('config.yaml','r') as f:
+        temp = yaml.load(f.read(), Loader=yaml.FullLoader)
+        appid = str(temp['appid'])
+        secretKey = temp['secretKey']
+else:
+    appid = ''
+    secretKey = ''
+
 def translate(text):
-    appid = '20220930001362291'        # 填写你的appid
-    secretKey = '1GKobMNylLnbAPL7qCWk'    # 填写你的密钥
-    
+
+    global appid
+    global secretKey
+
     httpClient = None
     myurl = '/api/trans/vip/translate'  # 通用翻译API HTTP地址
     
