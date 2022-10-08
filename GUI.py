@@ -8,7 +8,6 @@ class Root:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("ChaosShotTranslation")
-        self.root.geometry('')
         VerifPage(self.root)
 
 class VerifPage:
